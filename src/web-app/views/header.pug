@@ -1,19 +1,9 @@
-ul(class='navigation', role='navigation')
-  li.logo
-    a(href='/')
-      img(src='/images/auth0.png')
-  li
-      a(href='/') Home
-  li
-      a(href='/expenses') Expenses
-  li.spacer
+p
+  a(href='/') Home
+  |  |
   if user
-    li
-      a(href='/logout') Logout
-    li.profile
-      img.picture(src=user.picture)
+    a(href='/user') Profile
+    |  |
+    a(href='/logout') Log out
   else
-    li
-      a(href='/login') Login
-    li.profile
-      img(src='/images/profile.png')
+    a(href='/login') Sign in

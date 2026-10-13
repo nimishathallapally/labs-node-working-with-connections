@@ -11,7 +11,6 @@ const { auth, requiresAuth } = require('express-openid-connect');
 const {
   checkUrl,
   APP_URL, // Public URL for this app
-  API_URL, // URL for Expenses API
   ISSUER_BASE_URL, // Auth0 Tenant Url
   CLIENT_ID, // Auth0 Web App Client
   CLIENT_SECRET, // Auth0 Web App Client Secret
@@ -53,28 +52,11 @@ app.use(
   })
 );
 
-const expenses = [
-  {
-    date: new Date(),
-    description: 'Pizza for a Coding Dojo session.',
-    value: 102,
-  },
-  {
-    date: new Date(),
-    description: 'Coffee for a Coding Dojo session.',
-    value: 42,
-  },
-];
-
 app.get('/', async (req, res) => {
   res.render('home', {
     user: req.oidc && req.oidc.user,
-    total: expenses.reduce((accum, expense) => accum + expense.value, 0),
-    count: expenses.length,
   });
 });
-
-// 👇 add requiresAuth middlware to these private routes  👇
 
 app.get('/user', requiresAuth(), async (req, res) => {
   res.render('user', {
@@ -82,13 +64,6 @@ app.get('/user', requiresAuth(), async (req, res) => {
     id_token: req.oidc && req.oidc.idToken,
     access_token: req.oidc && req.oidc.accessToken,
     refresh_token: req.oidc && req.oidc.refreshToken,
-  });
-});
-
-app.get('/expenses', requiresAuth(), async (req, res, next) => {
-  res.render('expenses', {
-    user: req.oidc && req.oidc.user,
-    expenses,
   });
 });
 
